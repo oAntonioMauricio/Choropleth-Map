@@ -28,6 +28,8 @@ d3.json("https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/
 
     // Draw the map
     svg.append("g")
+        .attr("class", "myG")
+        .attr("transform", `translate(${padding * 3},${0})`)
         .selectAll("path")
         .data(topojson.feature(data, data.objects.counties).features)
         .enter()
