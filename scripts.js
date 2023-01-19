@@ -20,18 +20,20 @@ var projection = d3.geoMercator()
 // GEO PATH
 let path = d3.geoPath();
 
-//GET JSON DATA
-d3.json("https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/counties.json", function (data) {
+Promise.all([
+    d3.json('https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/counties.json'),
+    d3.json('https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/for_user_education.json')
+]).then(function ([data01, data02]) {
 
-    //console.log(data)
-    //console.log(data.objects.counties)
+    console.log(data01)
+    console.log(data02)
 
     // Draw the map
     svg.append("g")
         .attr("class", "myG")
         .attr("transform", `translate(${padding * 3},${0})`)
         .selectAll("path")
-        .data(topojson.feature(data, data.objects.counties).features)
+        .data(topojson.feature(data01, data01.objects.counties).features)
         .enter()
         .append("path")
         .attr("d", path)
@@ -41,28 +43,3 @@ d3.json("https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/
         .style("stroke", "none")
 
 })
-
-/*
-
-d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson", function (data) {
-
-    // Filter data
-    let dataFrance = data.features.filter(function(d){return d.properties.name=="France"})
-
-    console.log(data)
-    console.log(dataFrance)
-
-    // Draw the map
-    svg.append("g")
-        .selectAll("path")
-        .data(dataFrance)
-        .enter()
-        .append("path")
-        .attr("fill", "grey")
-        .attr("d", d3.geoPath()
-            .projection(projection)
-        )
-        .style("stroke", "none")
-})
-
-*/
