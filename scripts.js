@@ -43,8 +43,26 @@ Promise.all([
         }
     }
 
-    console.log(idsArray)
-    console.log(organizedData02)
+    // Colors for different percentages
+    let colors = ["#ddf9ff", "#94dbf5", "#3cbaf2", "#0097ee", "#0071e6", "#0047d4", "#0000b3"];
+
+    function applyColor(value) {
+        if (value >= 3 && value < 12) {
+            return colors[0]
+        } else if (value >= 0 && value < 21) {
+            return colors[1]
+        } else if (value >= 21 && value < 30) {
+            return colors[2]
+        } else if (value >= 30 && value < 39) {
+            return colors[3]
+        } else if (value >= 39 && value < 48) {
+            return colors[4]
+        } else if (value >= 48 && value < 57) {
+            return colors[5]
+        } else if (value >= 57) {
+            return colors[6]
+        }
+    }
 
     // Draw the map
     svg.append("g")
@@ -57,10 +75,46 @@ Promise.all([
         .attr("d", path)
         .attr("class", "county")
         .attr("data-fips", (d) => d.id)
-        .attr("fill", "grey")
         .style("stroke", "none")
         .data(organizedData02)
         .attr("data-education", (d) => d.bachelorsOrHigher)
+        .attr("fill", (d) => applyColor(d.bachelorsOrHigher))
 
+    // X Axis for legend
+    let valuesArray = [0.03, 0.12, 0.21, 0.30, 0.39, 0.48, 0.57, 0.66];
+
+    let xLegendScale = d3.scaleLinear()
+        .domain([0.03, 0.66])
+        .range([0, 200])
+
+    let xLegendAxis = d3.axisBottom(xLegendScale)
+        .ticks(8)
+        .tickFormat(d3.format(".0%"))
+        .tickValues(valuesArray)
+        .tickSize(15)
+
+    // G for legend
+    let legend = svg.append("g")
+        .attr("id", "legend")
+        .attr("transform", `translate(${w / 2 + 180},${50})`)
+
+    legend.append("g")
+        .attr("id", "x-legend-axis")
+        .attr("transform", `translate(${0},${0})`)
+        .call(xLegendAxis)
+        .call(g => g.select(".domain").remove())
+
+    let rectsArray = [0.03, 0.12, 0.21, 0.30, 0.39, 0.48, 0.57];
+
+    // Append rects on the legend
+    legend.selectAll("rect")
+        .data(rectsArray)
+        .enter()
+        .append("rect")
+        .attr("x", (d) => xLegendScale(d + 0.002))
+        .attr("y", 0)
+        .attr("width", 27.2)
+        .attr("height", 10)
+        .attr("fill", (d) => applyColor((d * 100).toFixed(1)))
 
 })
