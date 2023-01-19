@@ -47,9 +47,9 @@ Promise.all([
     let colors = ["#ddf9ff", "#94dbf5", "#3cbaf2", "#0097ee", "#0071e6", "#0047d4", "#0000b3"];
 
     function applyColor(value) {
-        if (value >= 3 && value < 12) {
+        if (value >= 0 && value < 12) {
             return colors[0]
-        } else if (value >= 0 && value < 21) {
+        } else if (value >= 12 && value < 21) {
             return colors[1]
         } else if (value >= 21 && value < 30) {
             return colors[2]
@@ -106,7 +106,7 @@ Promise.all([
         .style("stroke", "none")
         .data(organizedData02)
         .attr("data-education", (d) => d.bachelorsOrHigher)
-        .attr("fill", (d) => applyColor(d.bachelorsOrHigher))
+        .attr("fill", (d) => applyColor(Math.round(d.bachelorsOrHigher)))
         .on("mouseover", mouseover)
         .on("mouseleave", mouseleave)
 
