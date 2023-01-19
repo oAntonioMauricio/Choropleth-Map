@@ -64,6 +64,34 @@ Promise.all([
         }
     }
 
+    // TOOLTIPS
+    tooltip = d3.select("#holder")
+        .append("div")
+        .attr("class", "tooltip")
+        .attr("id", "tooltip")
+        .style("opacity", 0)
+
+    // A function that change this tooltip when the user hover a point.
+    // Its opacity is set to 1: we can now see it.
+    let mouseover = function (d) {
+        tooltip
+            .style("opacity", 0.9)
+        tooltip
+            .html(`hey`)
+            .style("left", (d3.pointer(d, path)[0]) + "px")
+            .style("top", (d3.pointer(d, path)[1]) + "px")
+            .attr("data-year", `hey}`)
+        d3.select(this)
+            .style("stroke", "black")
+            .style("stroke-width", 2)
+    }
+
+    let mouseleave = function (d) {
+        tooltip.style("opacity", 0)
+        d3.select(this)
+            .style("stroke", "none")
+    }
+
     // Draw the map
     svg.append("g")
         .attr("class", "myG")
@@ -76,6 +104,8 @@ Promise.all([
         .attr("class", "county")
         .attr("data-fips", (d) => d.id)
         .style("stroke", "none")
+        .on("mouseover", mouseover)
+        .on("mouseleave", mouseleave)
         .data(organizedData02)
         .attr("data-education", (d) => d.bachelorsOrHigher)
         .attr("fill", (d) => applyColor(d.bachelorsOrHigher))
