@@ -1,21 +1,12 @@
-const w = 1300;
+const w = 1040;
 const h = 600;
-const padding = 70;
-const paddingBottom = 100;
+const padding = 0;
 
 // CREATE SVG
 const svg = d3.select("#holder")
     .append("svg")
     .attr("width", w)
     .attr("height", h)
-
-/*
-// Map and projection
-var projection = d3.geoMercator()
-    .center([2, 47])                // GPS of location to zoom on
-    .scale(50)                       // This is like the zoom
-    .translate([w / 2, h / 2])
-*/
 
 // GEO PATH
 let path = d3.geoPath();
@@ -95,7 +86,7 @@ Promise.all([
     // Draw the map
     svg.append("g")
         .attr("class", "myG")
-        .attr("transform", `translate(${padding * 3},${0})`)
+        .attr("transform", `translate(${70},${-5})`)
         .selectAll("path")
         .data(topojson.feature(data01, data01.objects.counties).features)
         .enter()
