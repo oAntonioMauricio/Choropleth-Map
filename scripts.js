@@ -93,28 +93,31 @@ Promise.all([
         .tickValues(valuesArray)
         .tickSize(15)
 
-    // G for legend
+    // Create G for legend
     let legend = svg.append("g")
         .attr("id", "legend")
         .attr("transform", `translate(${w / 2 + 180},${50})`)
 
-    legend.append("g")
-        .attr("id", "x-legend-axis")
-        .attr("transform", `translate(${0},${0})`)
-        .call(xLegendAxis)
-        .call(g => g.select(".domain").remove())
-
-    let rectsArray = [0.03, 0.12, 0.21, 0.30, 0.39, 0.48, 0.57];
-
     // Append rects on the legend
+    let rectsArray = [...valuesArray];
+    rectsArray.pop();
+
     legend.selectAll("rect")
         .data(rectsArray)
         .enter()
         .append("rect")
         .attr("x", (d) => xLegendScale(d + 0.002))
         .attr("y", 0)
-        .attr("width", 27.2)
+        .attr("width", 200 / 7)
         .attr("height", 10)
+        .style("z-index", -1)
         .attr("fill", (d) => applyColor((d * 100).toFixed(1)))
+
+    // Append axis on legend
+    legend.append("g")
+        .attr("id", "x-legend-axis")
+        .attr("transform", `translate(${0},${0})`)
+        .call(xLegendAxis)
+        .call(g => g.select(".domain").remove())
 
 })
