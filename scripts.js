@@ -23,8 +23,8 @@ let path = d3.geoPath();
 //GET JSON DATA
 d3.json("https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/counties.json", function (data) {
 
-    console.log(data)
-    console.log(data.objects.counties)
+    //console.log(data)
+    //console.log(data.objects.counties)
 
     // Draw the map
     svg.append("g")
@@ -34,9 +34,10 @@ d3.json("https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/
         .data(topojson.feature(data, data.objects.counties).features)
         .enter()
         .append("path")
-        .attr("fill", "grey")
         .attr("d", path)
         .attr("class", "county")
+        .attr("data-fips", (d) => d.id)
+        .attr("fill", "grey")
         .style("stroke", "none")
 
 })
