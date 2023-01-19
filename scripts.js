@@ -73,20 +73,20 @@ Promise.all([
 
     // A function that change this tooltip when the user hover a point.
     // Its opacity is set to 1: we can now see it.
-    let mouseover = function (d) {
+    let mouseover = function (e, d) {
         tooltip
             .style("opacity", 0.9)
         tooltip
-            .html(`hey`)
-            .style("left", (d3.pointer(d, path)[0]) + "px")
-            .style("top", (d3.pointer(d, path)[1]) + "px")
-            .attr("data-year", `hey}`)
+            .html(`${d.area_name}, ${d.state}: ${d.bachelorsOrHigher}%`)
+            .style("left", (d3.pointer(e, path)[0]) + "px")
+            .style("top", (d3.pointer(e, path)[1]) + "px")
+            .attr("data-education", `${d.bachelorsOrHigher}`)
         d3.select(this)
             .style("stroke", "black")
             .style("stroke-width", 2)
     }
 
-    let mouseleave = function (d) {
+    let mouseleave = function (e, d) {
         tooltip.style("opacity", 0)
         d3.select(this)
             .style("stroke", "none")
@@ -104,11 +104,11 @@ Promise.all([
         .attr("class", "county")
         .attr("data-fips", (d) => d.id)
         .style("stroke", "none")
-        .on("mouseover", mouseover)
-        .on("mouseleave", mouseleave)
         .data(organizedData02)
         .attr("data-education", (d) => d.bachelorsOrHigher)
         .attr("fill", (d) => applyColor(d.bachelorsOrHigher))
+        .on("mouseover", mouseover)
+        .on("mouseleave", mouseleave)
 
     // X Axis for legend
     let valuesArray = [0.03, 0.12, 0.21, 0.30, 0.39, 0.48, 0.57, 0.66];
